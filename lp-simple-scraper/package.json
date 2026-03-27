@@ -1,0 +1,18 @@
+{
+  "name": "lp-simple-scraper",
+  "version": "1.0.0",
+  "type": "module",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "playwright": "^1.58.2"
+  },
+  "dependencies": {
+    "express": "^5.2.1"
+  }
+}
