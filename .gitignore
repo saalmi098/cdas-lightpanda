@@ -137,3 +137,16 @@ dist
 # Vite logs files
 vite.config.js.timestamp-*
 vite.config.ts.timestamp-*
+
+############### CUSTOM ##############
+
+# Benchmark results (Project specific)
+benchmark_results.csv
+
+# Playwright generated directories (if you start using HTML reports later)
+playwright-report/
+test-results/
+
+# OS generated files
+.DS_Store
+Thumbs.db
