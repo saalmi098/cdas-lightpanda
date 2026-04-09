@@ -8,23 +8,49 @@ export async function runTest(port) {
   const browser = await chromium.connectOverCDP(`http://127.0.0.1:${port}`);
   const endConnection = performance.now();
 
-  const contexts = browser.contexts();
-  const context = contexts.length > 0 ? contexts[0] : await browser.newContext();
-  const page = await context.newPage();
+  let context;
+  let page;
 
-  // Measure Page Navigation Time
-  const startNav = performance.now();
-  await page.goto('http://host.docker.internal:3000');
-  const title = await page.title(); // Ensure the page has loaded enough to grab the title
-  const endNav = performance.now();
+  try {
+    // Use a new isolated context/page each iteration.
+    context = await browser.newContext();
+    page = await context.newPage();
 
-  await browser.close();
-  const endTotal = performance.now();
+    // Measure Page Navigation Time
+    const startNav = performance.now();
+    await page.goto('http://host.docker.internal:3000');
+    await page.title(); // Ensure the page has loaded enough to grab the title
+    const endNav = performance.now();
 
-  // Return the metrics in milliseconds
-  return {
-    connectionTime: endConnection - startConnection,
-    navigationTime: endNav - startNav,
-    totalTime: endTotal - startTotal
-  };
+    const endTotal = performance.now();
+
+    // Return the metrics in milliseconds
+    return {
+      connectionTime: endConnection - startConnection,
+      navigationTime: endNav - startNav,
+      totalTime: endTotal - startTotal
+    };
+  } finally {
+    if (page) {
+      try {
+        await page.close();
+      } catch {
+        // Ignore cleanup errors.
+      }
+    }
+
+    if (context) {
+      try {
+        await context.close();
+      } catch {
+        // Ignore cleanup errors.
+      }
+    }
+
+    try {
+      await browser.close();
+    } catch {
+      // Ignore cleanup errors.
+    }
+  }
 }
