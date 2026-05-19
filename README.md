@@ -7,9 +7,9 @@
 ## 1. Setup
 Clone the repository and install the Node.js dependencies (Playwright and Express):
 ```bash
+cd lp-simple-scraper
 npm install
 ```
-[cite_start]*Note: Ensure your simple, static target application (`index.html`) is placed inside the `public` folder[cite: 20].*
 
 ## 2. Start the Browser Engines
 Start both browser engines with Docker Compose:
