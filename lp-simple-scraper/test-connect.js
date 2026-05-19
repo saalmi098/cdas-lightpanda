@@ -1,6 +1,6 @@
 import { chromium } from 'playwright';
 
-export async function runTest(port) {
+export async function runConnectTest(port) {
   const startTotal = performance.now();
 
   // Measure Connection Time
