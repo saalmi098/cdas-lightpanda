@@ -9,7 +9,7 @@ let page;
 
 test.beforeAll(async () => {
   browser = await chromium.connectOverCDP(CDP_ENDPOINT);
-  const context = await browser.newContext();
+  const context = browser.contexts()[0];
   page = await context.newPage();
   await page.goto(TODOMVC_URL);
 });
