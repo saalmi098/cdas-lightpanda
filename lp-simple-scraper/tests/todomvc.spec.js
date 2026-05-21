@@ -1,5 +1,5 @@
 import { chromium } from 'playwright';
-import { test, expect } from '@playwright/test';
+import { test, expect } from 'playwright/test';
 
 const CDP_ENDPOINT = process.env.CDP_ENDPOINT ?? 'http://127.0.0.1:9222';
 const TODOMVC_URL = 'https://todomvc.com/examples/react/dist/';
