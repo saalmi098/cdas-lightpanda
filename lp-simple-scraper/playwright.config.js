@@ -7,5 +7,6 @@ export default defineConfig({
   reporter: 'list',
   projects: [
     { name: 'lightpanda' },
+    { name: 'chromium' },
   ],
 });
