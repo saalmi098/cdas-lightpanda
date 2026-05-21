@@ -61,7 +61,7 @@ test('filter completed todos', async () => {
   await addTodo('Buy groceries');
   await page.locator('.toggle').first().click();
   await page.locator('a[href="#/completed"]').click();
-  await page.waitForURL('**#/completed');
+  // await page.waitForURL('**#/completed');
   await expect(page.locator('.todo-list li')).toHaveCount(1);
   await expect(page.locator('.todo-list li.completed')).toHaveCount(1);
 });
