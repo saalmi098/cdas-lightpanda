@@ -47,6 +47,7 @@ test('filter completed todos', async () => {
   await addTodo('Buy groceries');
   await page.locator('.toggle').first().click();
   await page.locator('a[href="#/completed"]').click();
+  await page.waitForURL('**#/completed');
   await expect(page.locator('.todo-list li')).toHaveCount(1);
   await expect(page.locator('.todo-list li.completed')).toHaveCount(1);
 });
@@ -55,5 +56,6 @@ test('filter active todos shows empty list', async () => {
   await addTodo('Buy groceries');
   await page.locator('.toggle').first().click();
   await page.locator('a[href="#/active"]').click();
+  await page.waitForURL('**#/active');
   await expect(page.locator('.todo-list li')).toHaveCount(0);
 });
