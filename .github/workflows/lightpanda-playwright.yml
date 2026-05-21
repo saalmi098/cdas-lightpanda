@@ -45,6 +45,6 @@ jobs:
 
       - name: Run Playwright tests
         working-directory: lp-simple-scraper
-        run: npm test
+        run: npm test -- --project=lightpanda
         env:
           CDP_ENDPOINT: http://127.0.0.1:9222
