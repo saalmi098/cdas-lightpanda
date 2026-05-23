@@ -75,4 +75,3 @@ test('filter completed todos', async () => {
 //   await expect(page.locator('.todo-list li')).toHaveCount(0);
 // });
 
-// test
