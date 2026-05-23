@@ -1,0 +1,5 @@
+engine;run_id;started_at;completed_at;total_duration_sec;setup_overhead_sec;execution_time_sec;teardown_overhead_sec
+Google Chrome;26235543090;2026-05-21T15:24:37Z;2026-05-21T15:25:00Z;23;15;5;0
+Google Chrome;26338284707;2026-05-23T16:51:05Z;2026-05-23T16:51:36Z;31;25;3;1
+Lightpanda;26235543326;2026-05-21T15:24:38Z;2026-05-21T15:24:57Z;19;14;3;1
+Lightpanda;26338284696;2026-05-23T16:51:05Z;2026-05-23T16:51:20Z;15;10;3;0
