@@ -1,6 +1,7 @@
 name: Chrome + Playwright
 
 on:
+  workflow_dispatch:
   push:
     branches: [main, ci-lightpanda]
   pull_request:

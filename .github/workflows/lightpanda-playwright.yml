@@ -1,6 +1,7 @@
 name: Lightpanda + Playwright
 
 on:
+  workflow_dispatch:
   push:
     branches: [main, ci-lightpanda]
   pull_request:
