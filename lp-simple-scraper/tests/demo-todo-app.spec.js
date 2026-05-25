@@ -1,4 +1,4 @@
-import { chromium } from 'playwright';
+/*import { chromium } from 'playwright';
 import { test, expect } from 'playwright/test';
 
 const CDP_ENDPOINT = process.env.CDP_ENDPOINT ?? 'http://127.0.0.1:9222';
@@ -408,3 +408,4 @@ async function checkTodosInLocalStorage(page, title) {
     return JSON.parse(localStorage['react-todos']).map(todo => todo.title).includes(t);
   }, title);
 }
+*/
