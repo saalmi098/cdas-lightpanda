@@ -6,7 +6,7 @@ export default defineConfig({
   retries: 0,
   reporter: 'list',
   projects: [
-    { name: 'lightpanda', testMatch: '**/todomvc.spec.js' },
-    { name: 'chromium',   testMatch: '**/todomvc.spec.js' },
+    { name: 'lightpanda', testMatch: '**/practicesoftwaretesting.spec.js' },
+    { name: 'chromium',   testMatch: '**/practicesoftwaretesting.spec.js' },
   ],
 });
