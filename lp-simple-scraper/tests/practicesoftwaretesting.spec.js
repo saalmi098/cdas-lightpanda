@@ -280,7 +280,7 @@ test('login with valid credentials leaves login page', async () => {
   await expect(page).not.toHaveURL(/auth\/login/);
 });
 
-test('login with valid user credentials displays dashboard', async ({page}) => {
+test('login with valid user credentials displays dashboard', async () => {
     await page.goto(BASE);
     await page.locator('[data-test="nav-sign-in"]').click();
     await page.locator('[data-test="email"]').fill('customer@practicesoftwaretesting.com');
