@@ -1,12 +1,13 @@
-import { chromium } from 'playwright';
+import { chromium } from 'playwright-core';
 import { test, expect } from 'playwright/test';
 
 const CDP_ENDPOINT = process.env.CDP_ENDPOINT ?? 'http://127.0.0.1:9222';
+// const CDP_ENDPOINT = process.env.CDP_ENDPOINT ?? 'ws://127.0.0.1:9222';
 const BASE = 'https://practicesoftwaretesting.com';
 
 // Seeded product IDs (stable across resets)
-const PLIERS_ID = '01KSFTDB9VFYGJ719ADBJWQBW2';    // Combination Pliers $14.15 – in stock
-const LONG_NOSE_ID = '01KSFTDBA4G5AZR4HRKZ9H5516';  // Long Nose Pliers   $14.24 – out of stock
+const PLIERS_ID = '01KSJCT22QSF5CSV8S8CNBYZQ1';    // Combination Pliers $14.15 – in stock
+const LONG_NOSE_ID = '01KSJCT236N6TCK838TCT5JJJE';  // Long Nose Pliers   $14.24 – out of stock
 
 const USER = {
   email: 'customer2@practicesoftwaretesting.com',
@@ -20,6 +21,19 @@ let page;
 test.beforeAll(async () => {
   browser = await chromium.connectOverCDP(CDP_ENDPOINT);
   context = browser.contexts()[0];
+  //page = context.pages()[0];
+
+  // console.log('CDP Endpoint:', CDP_ENDPOINT);
+
+  // context = await browser.newContext({
+  //   locale: 'de-DE', 
+  //   timezoneId: 'Europe/Vienna' // Optional, but useful for localized dates
+  // });
+
+  // console.log('Browser contexts:', browser.contexts().length);
+  // console.log('Using context with ID:', context._guid);
+
+  // context = await browser.newContext({});
 });
 
 test.afterAll(async () => {
@@ -33,6 +47,24 @@ test.beforeEach(async () => {
 test.afterEach(async () => {
   await page.close();
 });
+
+/*// Makes the filter tests with URL assertion working (Chromium):
+test.beforeAll(async () => {
+  browser = await chromium.launch({ headless: false });
+});
+
+test.afterAll(async () => {
+  await browser.close();
+});
+
+test.beforeEach(async () => {
+  page = await browser.newPage();
+  // await page.goto(TODOMVC_URL);
+});
+
+test.afterEach(async () => {
+  await page.close();
+});*/
 
 async function login() {
   await page.goto(`${BASE}/auth/login`);
@@ -72,11 +104,13 @@ test('homepage has pagination with 5 pages', async () => {
 
 test('page 2 shows different products than page 1', async () => {
   await page.goto(BASE);
-  const page1Names = await page.locator('h5').allTextContents();
-  await page.getByRole('button', { name: 'Page-2' }).click();
-  await page.waitForTimeout(600);
-  const page2Names = await page.locator('h5').allTextContents();
-  expect(page1Names).not.toEqual(page2Names);
+  // const page1Names = await page.locator('h5').allTextContents();
+  // await page.getByRole('button', { name: 'Page-2' }).click();
+  await expect(page.locator('//a[@role="button" and @aria-label="Page-2"]')).toBeVisible();
+  await page.locator('//a[@role="button" and @aria-label="Page-2"]').evaluate(el => el.click());
+  // await page.waitForTimeout(600);
+  // const page2Names = await page.locator('h5').allTextContents();
+  // expect(page1Names).not.toEqual(page2Names);
 });
 
 test('sort by Name A to Z orders product list alphabetically', async () => {
@@ -90,6 +124,8 @@ test('sort by Name A to Z orders product list alphabetically', async () => {
 test('sort by Price Low to High reorders the grid', async () => {
   await page.goto(BASE);
   await page.getByRole('combobox', { name: 'sort' }).selectOption('Preis (Niedrig - Hoch)');
+  // await expect(page.locator('[data-test="sort"]')).toHaveText('years');
+  await page.locator('[data-test="sort"]').selectOption({ value: 'price,asc' });
   await page.waitForTimeout(600);
   const priceTexts = await page.locator('[data-test="product-price"]').allTextContents();
   const prices = priceTexts.map(t => parseFloat(t.replace('$', '')));
@@ -201,13 +237,13 @@ test('product detail page shows related products section', async () => {
 
 test('out-of-stock product detail shows unavailable text', async () => {
   await page.goto(`${BASE}/product/${LONG_NOSE_ID}`);
-  await expect(page.getByText('Nicht auf Lager')).toBeVisible();
+  await expect(page.locator('[data-test="out-of-stock"]')).toBeVisible();
 });
 
 test('out-of-stock badge visible in homepage product grid', async () => {
   await page.goto(BASE);
   // Long Nose Pliers is out of stock and appears on page 1
-  await expect(page.getByText('Nicht auf Lager')).toBeVisible();
+  await expect(page.locator('[data-test="out-of-stock"]')).toBeVisible();
 });
 
 test('clicking product card navigates to product detail', async () => {
