@@ -1,0 +1,49 @@
+name: Chrome + Playwright
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main, ci-lightpanda]
+  pull_request:
+    branches: [main]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: lts/*
+          cache: npm
+          cache-dependency-path: lp-simple-scraper/package-lock.json
+
+      - name: Install Node dependencies
+        working-directory: lp-simple-scraper
+        run: npm ci
+
+      - name: Start Chrome CDP server
+        run: |
+          google-chrome-stable \
+            --headless=new \
+            --remote-debugging-port=9223 \
+            --no-sandbox \
+            --disable-dev-shm-usage \
+            about:blank &
+
+      - name: Wait for Chrome CDP to be ready
+        run: |
+          for i in $(seq 1 15); do
+            curl -sf http://127.0.0.1:9223/json/version && break
+            echo "Waiting for Chrome... attempt $i"
+            sleep 1
+          done
+
+      - name: Run Playwright tests
+        working-directory: lp-simple-scraper
+        run: npm test -- --project=chromium
+        env:
+          CDP_ENDPOINT: http://127.0.0.1:9223
