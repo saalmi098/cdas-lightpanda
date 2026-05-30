@@ -1,0 +1,16 @@
+\section{Methodology}
+\label{sec:methodology}
+
+All experiments compare Lightpanda (version 0.3.0) against Google Chrome Headless using Playwright connected via CDP. The study is structured in three stages of increasing realism.
+
+\subsection{Stage 1: Local Micro-Benchmark}
+
+A Node.js Express server serves a static HTML page locally, eliminating network latency. For each iteration, a Playwright script connects to the running browser via CDP, creates a new isolated browser context, navigates to the local page, and closes the context. Four metrics are recorded: \emph{ConnectionTimeMs} (CDP WebSocket handshake), \emph{NavigationTimeMs} (\texttt{page.goto()} completion), \emph{TotalTimeMs} (full iteration wall-clock), and \emph{MemoryUsageMB} (browser process resident memory). 100 iterations per engine are executed on three hardware configurations: an Intel i5-1135G7 laptop (Win11, 16 GB), an Intel i5-13400F desktop (Win11, 16 GB), and an Apple MacBook Pro M3 Max (48 GB). A cold-start variant runs both engines as fresh Docker containers per iteration to measure startup overhead. On Windows hosts, Lightpanda requires Docker or WSL2 as it has no native binary; Chrome also runs in Docker there for a fair comparison.
+
+\subsection{Stage 2: GitHub Actions CI Pipeline}
+
+Two GitHub Actions workflows—one per engine—run three Playwright tests against the TodoMVC React demo.\footnote{\url{https://todomvc.com/examples/react/dist/}} The tests verify adding, completing, and filtering todo items. The Chrome workflow installs Chromium via \texttt{npx playwright install}; the Lightpanda workflow downloads a single binary (\textasciitilde20 MB). Both run on \texttt{ubuntu-latest} and use an identical test file, differing only in the \texttt{CDP\_ENDPOINT} variable. Pipeline timing (setup overhead, test execution, teardown, total duration) is recorded over 10 runs per engine.
+
+\subsection{Stage 3: Real Application Test}
+
+Stage 3 is the most practically relevant experiment. A suite of 40 Playwright tests is executed against \texttt{practicesoftwaretesting.com}, a publicly available Angular-based e-commerce application designed for testing practice. The suite covers five functional areas: product listing (pagination, sorting, filtering, search), product detail pages, cart and checkout access, authentication (login, register, forgot password), and a contact form. Tests include simple visibility assertions, multi-step user flows (login then navigate), DOM content verification, and URL-based navigation assertions. All tests pass on Google Chrome. The same test file is run against Lightpanda without modification, and all failures are recorded along with their root causes.

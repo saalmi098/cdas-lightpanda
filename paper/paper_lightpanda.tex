@@ -1,0 +1,73 @@
+\documentclass[conference]{IEEEtran}
+\usepackage[utf8]{inputenc}
+\IEEEoverridecommandlockouts
+\usepackage{cite}
+\usepackage{amsmath,amssymb,amsfonts}
+\usepackage{graphicx}
+\usepackage{textcomp}
+\usepackage{xcolor}
+\usepackage{url}
+\usepackage{listings}
+\usepackage{booktabs}
+\usepackage{multirow}
+\usepackage{tikz}
+\usetikzlibrary{shapes.geometric, arrows, positioning, fit}
+
+\def\BibTeX{{\rm B\kern-.05em{\sc i\kern-.025em b}\kern-.08em
+    T\kern-.1667em\lower.7ex\hbox{E}\kern-.125emX}}
+
+\definecolor{pblue}{rgb}{0.13,0.13,0.6}
+\definecolor{pgreen}{rgb}{0,0.5,0}
+\definecolor{pred}{rgb}{0.64,0.08,0.08}
+\definecolor{pgrey}{rgb}{0.46,0.45,0.48}
+\definecolor{codebackcolor}{rgb}{0.94,0.94,0.94}
+
+\lstdefinestyle{yaml}{
+  basicstyle=\footnotesize\ttfamily,
+  keywordstyle=\color{pblue}\bfseries,
+  commentstyle=\color{pgreen}\itshape,
+  stringstyle=\color{pred},
+  numbers=none,
+  showspaces=false,
+  showtabs=false,
+  showstringspaces=false,
+  breaklines=true,
+  frame=none,
+  backgroundcolor=\color{codebackcolor},
+  captionpos=b,
+}
+
+\lstset{style=yaml}
+
+\begin{document}
+
+\title{Evaluating Lightpanda Browser Performance and Compatibility in End-To-End Tests}
+
+\author{
+    \IEEEauthorblockN{Ing. Andreas Salminger, BSc.}
+    \IEEEauthorblockA{
+    \textit{Mobile Computing Master's program}\\
+    University of Applied Sciences Upper Austria,\\Campus Hagenberg
+    }
+    \and
+    \IEEEauthorblockN{Clemens Zellinger, BSc.}
+    \IEEEauthorblockA{
+    \textit{Mobile Computing Master's program}\\
+    University of Applied Sciences Upper Austria,\\Campus Hagenberg
+    }
+}
+
+\maketitle
+
+\input{chapters/00_abstract}
+\input{chapters/10_introduction}
+\input{chapters/20_background}
+\input{chapters/30_methodology}
+\input{chapters/40_results}
+\input{chapters/50_evaluation}
+\input{chapters/60_conclusion}
+
+\bibliographystyle{ieeetr}
+\bibliography{references.bib}
+
+\end{document}

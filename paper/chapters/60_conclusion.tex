@@ -1,0 +1,12 @@
+\section{Conclusion}
+\label{sec:conclusion}
+
+This paper presented a three-stage empirical evaluation of Lightpanda as a drop-in replacement for Google Chrome Headless in Playwright-based end-to-end test pipelines. The headline finding is clear: \textbf{Lightpanda is not production-ready and cannot replace Chrome Headless for real-world E2E testing in its current form.}
+
+The performance story is real but limited in scope. Lightpanda is approximately 2$\times$ faster and uses 10$\times$ less memory than Chrome in controlled benchmarks against simple pages, and delivers a 1.23$\times$ pipeline speedup in a three-test GitHub Actions workflow. These advantages stem from its lightweight single-process design and minimal rendering stack.
+
+The compatibility story undoes the performance gains. Against a realistic Angular e-commerce application with 40 Playwright tests, Lightpanda fails 30 -- a 75\% failure rate driven by fundamental missing capabilities: no isolated browser context support, incomplete CDP domain coverage, an incomplete JavaScript engine, and absent locale handling. These are not minor gaps; they disqualify Lightpanda for the standard patterns used in professional E2E test suites.
+
+Additionally, Lightpanda's advertised benchmark figures -- 9$\times$ faster, 16$\times$ less memory across 933 ``real web pages'' -- are derived from a trivial purpose-built demo page that bears no resemblance to real web applications. These figures cannot be used to assess Lightpanda's suitability for production E2E pipelines.
+
+Lightpanda is a promising research-stage project for web crawling and simple navigation automation, but its current maturity level makes it unsuitable as a Chrome replacement for teams with non-trivial test suites. Future work should re-evaluate Lightpanda as browser context isolation, CDP coverage, and JavaScript engine support mature in subsequent releases.
