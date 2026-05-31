@@ -9,7 +9,7 @@ A Node.js Express server serves a static HTML page locally, eliminating network 
 
 \subsection{Stage 2: GitHub Actions CI Pipeline}
 
-Two GitHub Actions workflows—one per engine—run three Playwright tests against the TodoMVC React demo.\footnote{\url{https://todomvc.com/examples/react/dist/}} The tests verify adding, completing, and filtering todo items. The Chrome workflow installs Chromium via \texttt{npx playwright install}; the Lightpanda workflow downloads a single binary (\textasciitilde20 MB). Both run on \texttt{ubuntu-latest} and use an identical test file, differing only in the \texttt{CDP\_ENDPOINT} variable. Pipeline timing (setup overhead, test execution, teardown, total duration) is recorded over 10 runs per engine.
+Two GitHub Actions workflows -- one per engine -- run three simple Playwright tests against the \textit{TodoMVC React demo}\footnote{\url{https://todomvc.com/examples/react/dist/}} application. The tests verify adding, completing, and filtering todo items. The Chrome workflow installs Chromium via \texttt{npx playwright install}; the Lightpanda workflow downloads a single binary (\textasciitilde20 MB). Both run on \texttt{ubuntu-latest} and use an identical test file, differing only in the \texttt{CDP\_ENDPOINT} variable. Pipeline timing (setup overhead, test execution, teardown, total duration) is recorded over 10 runs per engine.
 
 \subsection{Stage 3: Real Application Test}
 
