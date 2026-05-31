@@ -3,7 +3,9 @@
 
 \subsection{Stage 1: Local Micro-Benchmark}
 
-Table~\ref{tab:connect} summarises mean performance across 100 iterations in connect mode on two representative platforms. Lightpanda is approximately 2$\times$ faster in total request time and uses 10--16$\times$ less memory across all configurations. The single phase where Chrome leads is the initial CDP WebSocket handshake, which Chrome completes 11--32\% faster than Lightpanda -- likely reflecting the maturity gap between Chrome's well-optimised DevTools server and Lightpanda's early-stage CDP implementation. In the cold-start (launch) mode, Lightpanda starts as a Docker container 33--98\% faster than Chrome and remains 1.4--1.6$\times$ faster overall.
+Table~\ref{tab:connect} summarises mean performance across 100 iterations in connect mode on two representative platforms. Lightpanda is approximately 2$\times$ faster in total request time and uses 10--16$\times$ less memory across all configurations. The single phase where Chrome leads is the initial CDP WebSocket handshake (connection time), which Chrome completes 11--32\% faster than Lightpanda -- likely reflecting the maturity gap between Chrome's well-optimised DevTools server and Lightpanda's early-stage CDP implementation. In the cold-start (launch) mode, Lightpanda starts as a Docker container 33--98\% faster than Chrome and remains 1.4--1.6$\times$ faster overall.
+
+% TODO: Windows 11 stats sind falsch? Achtung diese Werte werden auch in Kap 4 Section A im Text verwendet
 
 \begin{table}[t]
 \centering
@@ -12,7 +14,7 @@ Table~\ref{tab:connect} summarises mean performance across 100 iterations in con
 \resizebox{\columnwidth}{!}{%
 \begin{tabular}{llrrr}
 \toprule
-\textbf{Host} & \textbf{Metric} & \textbf{Lightpanda} & \textbf{Chrome} & \textbf{Chrome $\Delta$\%} \\
+\textbf{Host} & \textbf{Metric} & \textbf{Lightpanda} & \textbf{Chrome} & \textbf{$\Delta$Chrome} \\
 \midrule
 \multirow{4}{*}{Windows 11, i5-13400F}
   & Total time (ms)    & 30.0  & 59.4  & +98\%  \\
@@ -34,20 +36,20 @@ The performance advantage is concentrated in the navigation phase, where Lightpa
 
 \subsection{Stage 2: GitHub Actions CI Pipeline}
 
-Table~\ref{tab:pipeline} shows mean pipeline metrics over 10 runs per engine. Lightpanda completes the total job 22.5\% faster (1.23$\times$ geometric mean) and test execution 50\% faster (1.50$\times$ geometric mean). Lightpanda finishes faster on total wall-clock time in 7 of 10 runs and on test execution in 9 of 10 runs. Setup overhead dominates total duration for both engines, accounting for roughly 70\% of total job time; Lightpanda's smaller binary reduces this phase by 20.6\%. All three TodoMVC tests pass on both engines without modification.
+Table~\ref{tab:pipeline} shows mean pipeline metrics over 10 GitHub Actions runs per engine. Lightpanda completes the total job 22.5\% faster (1.23$\times$ geometric mean) and test execution 50\% faster (1.50$\times$ geometric mean). Lightpanda finishes faster on total wall-clock time in 7 of 10 runs and on test execution in 9 of 10 runs. Setup overhead dominates total duration for both engines, accounting for roughly 70\% of total job time; Lightpanda's smaller binary reduces this phase by 20.6\%. All three TodoMVC tests pass on both engines without modification.
 
 \begin{table}[t]
 \centering
 \caption{Stage 2 -- GitHub Actions pipeline metrics (10 runs, mean values)}
 \label{tab:pipeline}
-\begin{tabular}{lrrl}
+\begin{tabular}{lrrr}
 \toprule
-\textbf{Metric} & \textbf{Lightpanda} & \textbf{Chrome} & \textbf{Chrome $\Delta$\%} \\
+\textbf{Metric} & \textbf{Lightpanda} & \textbf{Chrome} & \textbf{$\Delta$Chrome} \\
 \midrule
-Total duration (s)  & 18.2 & 22.3 & +22.5\% \\
-Setup overhead (s)  & 12.6 & 15.2 & +20.6\% \\
-Test execution (s)  & 3.0  & 4.5  & +50.0\% \\
-Teardown (s)        & 0.5  & 0.4  & n/a \\
+\textbf{Total duration (s)}  & \textbf{18.2} & \textbf{22.3} & \textbf{+23\%} \\
+Setup overhead (s)  & 12.6 & 15.2 & +21\% \\
+Test execution (s)  & 3.0  & 4.5  & +50\% \\
+Teardown (s)        & 0.5  & 0.4  & $-$20\% \\
 \bottomrule
 \end{tabular}
 \end{table}
@@ -56,17 +58,17 @@ These results are consistent with Stage 1: the speedup is real but moderate in t
 
 \subsection{Stage 3: Real Application Test}
 
-Stage 3 is the decisive experiment. The full 40-test Playwright suite is executed against \texttt{practicesoftwaretesting.com}: a publicly available Angular-based e-commerce application with authentication, product listings, pagination, filtering, search, cart management, and a contact form. This represents a realistic workload for a professional E2E test pipeline.
+Stage 3 is the decisive experiment. The full 40-test Playwright suite is executed against \textit{\url{practicesoftwaretesting.com}}: a publicly available Angular-based e-commerce testing application with authentication, product listings, pagination, filtering, search, cart management, and a contact form. This represents a realistic workload for a professional E2E test pipeline.
 
-Google Chrome passes all 40 tests. Lightpanda fails 30 of 40 -- a \textbf{75\% failure rate}. Table~\ref{tab:stage3} summarises results by functional category.
+Google Chrome passes all 40 tests. Lightpanda fails 30 of 40 -- a 75\% failure rate. Table~\ref{tab:stage3} summarises results by functional category.
 
 \begin{table}[t]
 \centering
 \caption{Stage 3 -- test results on practicesoftwaretesting.com (40 tests)}
 \label{tab:stage3}
-\begin{tabular}{lrrl}
+\begin{tabular}{lrrr}
 \toprule
-\textbf{Category} & \textbf{Chrome} & \textbf{LP pass} & \textbf{LP pass rate} \\
+\textbf{Category} & \textbf{Chrome pass} & \textbf{LP pass} & \textbf{LP pass rate} \\
 \midrule
 Product listing (10 tests)  & 10/10 & 1/10  & 10\% \\
 Product detail (9 tests)    & 9/9   & 0/9   & 0\%  \\
@@ -79,16 +81,16 @@ Contact form (8 tests)      & 8/8   & 2/8   & 25\% \\
 \end{tabular}
 \end{table}
 
-The failures are not caused by flaky tests or application-specific quirks; all 40 tests were verified to be stable and passing on Chrome before the Lightpanda run. The root causes, as observed from Playwright error output, fall into five distinct categories:
+The failures are not caused by flaky tests or application-specific quirks; all 40 tests were verified to be stable and passing on Chrome before the Lightpanda run. The root causes, as observed from Playwright error output, fall into several categories:
 
 \begin{itemize}
-    \item \textbf{Isolated browser contexts not supported.} The test suite calls \texttt{browser.newContext()} before each test to create an isolated browsing session -- the standard Playwright pattern for preventing state leakage between tests \cite{playwright2024}. Lightpanda does not implement \texttt{newContext()}, causing every test that depends on a fresh context to fail immediately with a protocol error before any assertion runs. This alone accounts for the majority of failures.
+    \item \textbf{Isolated browser contexts not supported.} The test suite calls \texttt{browser.newContext()} before each test to create an isolated browsing session -- the standard Playwright pattern for preventing state leakage between tests \cite{playwright2024}. Lightpanda does not implement \texttt{newContext()}, causing every test that depends on a fresh context to fail immediately with a protocol error before any assertion runs. This alone accounts for the majority of failures as multiple tests need to share the same context.
 
     \item \textbf{CDP domains missing.} Playwright internally issues calls to CDP domains such as \texttt{Emulation}, \texttt{Network}, and \texttt{Input} to configure the browser environment and dispatch events. Several of these domains are absent or return incomplete responses in Lightpanda, producing protocol-level failures that surface as timeout errors or unresolvable locators.
 
     \item \textbf{JavaScript engine incompleteness.} The application under test is built with Angular, a framework whose runtime relies on a range of browser APIs including \texttt{MutationObserver}, custom event dispatch, and modern array and object methods. Lightpanda's JavaScript engine does not fully cover these APIs, causing the framework to fail to initialise correctly on several pages, which in turn means that Playwright's auto-waiting mechanism never sees the expected DOM state.
 
-    \item \textbf{No locale or timezone support.} Playwright supports configuring browser context locale and timezone via \texttt{browser.newContext(\{locale, timezoneId\})}. The test application renders its UI in German (\texttt{de-DE}), so tests use German-language role names and labels (e.g.\ \texttt{Email Adresse}, \texttt{Suche}, \texttt{Senden}). Lightpanda does not support locale configuration, which means these Playwright locators cannot be matched even when the DOM renders.
+    \item \textbf{No locale or timezone support.} Playwright supports configuring browser context locale and timezone via \texttt{browser.newContext(\{locale, timezoneId\})}. The test application renders its UI in German (\texttt{de-DE}), so tests use German-language role names and labels (e.g.\ \textit{Email Adresse}, \textit{Suche}, \textit{Senden}). Lightpanda does not support locale configuration, which means these Playwright locators cannot be matched even when the DOM renders.
 
     \item \textbf{Confusing and misleading error messages.} Lightpanda's CDP error responses do not consistently identify which domain or method failed. This makes it substantially harder to diagnose and triage failures compared to Chrome, which provides structured protocol error payloads.
 \end{itemize}

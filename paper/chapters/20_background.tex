@@ -1,7 +1,7 @@
 \section{Background}
 \label{sec:background}
 
-\subsection{Headless Browsers and the Chrome DevTools Protocol (CDP)}
+\subsection{Headless Browsers and Chrome DevTools Protocol (CDP)}
 
 A headless browser executes JavaScript, renders the DOM, and responds to automation commands without a graphical display. Google Chrome introduced native headless mode in 2017, superseding earlier tools such as PhantomJS \cite{duda2018phantom} and quickly becoming the dominant choice for browser automation due to its comprehensive web standards support. Its primary drawback in CI contexts is resource intensity: Chrome's multi-process architecture spawns dedicated renderer, GPU, and network service processes, resulting in hundreds of megabytes of resident memory per instance \cite{reis2009isolating}.
 
