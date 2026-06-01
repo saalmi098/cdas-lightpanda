@@ -3,7 +3,7 @@
 
 \subsection{Headless Browsers and Chrome DevTools Protocol (CDP)}
 
-A headless browser executes JavaScript, renders the DOM, and responds to automation commands without a graphical display. Google Chrome introduced native headless mode in 2017, superseding earlier tools such as PhantomJS \cite{duda2018phantom} and quickly becoming the dominant choice for browser automation due to its comprehensive web standards support. Its primary drawback in CI contexts is resource intensity: Chrome's multi-process architecture spawns dedicated renderer, GPU, and network service processes, resulting in hundreds of megabytes of resident memory per instance \cite{reis2009isolating}.
+A headless browser executes JavaScript, renders the DOM, and responds to automation commands without a graphical display. Google Chrome introduced native headless mode in 2017 and quickly became a widely-used choice for browser automation due to its comprehensive web standards support and large tooling ecosystem. Its primary drawback in CI contexts is resource intensity: Chrome's multi-process architecture spawns dedicated renderer, GPU, and network service processes, resulting in hundreds of megabytes of resident memory per instance \cite{reis2009isolating}.
 
 The CDP is a WebSocket-based remote control interface that exposes browser internals -- DOM manipulation, JavaScript execution, navigation, and network interception -- to external automation tools \cite{cdp2024}. Because Lightpanda implements a CDP-compatible server, Playwright can connect to it using the same endpoint configuration as for Chrome, making the two engines nominally interchangeable at the protocol level.
 

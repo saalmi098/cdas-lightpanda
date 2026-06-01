@@ -5,8 +5,6 @@
 
 Table~\ref{tab:connect} summarises mean performance across 100 iterations in connect mode on two representative platforms. Lightpanda is approximately 2$\times$ faster in total request time and uses approximately 10$\times$ less memory across all configurations (9.5$\times$ on MacBook M3 Max, 11$\times$ on the Windows Host). The single phase where Chrome leads is the initial CDP WebSocket handshake (connection time), which Chrome completes 11--32\% faster than Lightpanda -- likely reflecting the maturity gap between Chrome's well-optimised DevTools server and Lightpanda's early-stage CDP implementation. In the cold-start (launch) mode, Lightpanda starts as a Docker container 33--98\% faster than Chrome and remains 1.4--1.6$\times$ faster overall.
 
-% TODO: Windows 11 stats sind falsch? Achtung diese Werte werden auch in Kap 4 Section A im Text verwendet
-
 \begin{table}[t]
 \centering
 \caption{Stage 1 -- local connect-mode benchmark (100 iterations, mean values)}
